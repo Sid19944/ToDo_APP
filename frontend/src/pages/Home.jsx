@@ -11,7 +11,10 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { deleteTask, getAllTasks, taskDone } from "../store/slice/task.slice";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
+import { getAllTasks } from "../store/slice/task.slice";
 
 import AddTask from "./task/AddTask";
 import AllTodo from "./task/AllTodo";
@@ -19,7 +22,9 @@ import AllTodo from "./task/AllTodo";
 function Home() {
   const [showPage, setShowPage] = useState("to-do");
   const [mode, setMode] = useState("dark");
-  let lastDate = null;
+  const [dateTask, setDateTask] = useState("");
+  const greet = new Date().getHours();
+  const dates = [];
 
   const time = new Date().toLocaleTimeString();
 
@@ -35,7 +40,6 @@ function Home() {
   const handleLogout = () => {
     dispatch(logoutUser());
   };
-
   useEffect(() => {
     if (Object.keys(user).length == 0) dispatch(getUser());
     if (!isAuthenticated) {
@@ -88,6 +92,15 @@ function Home() {
         </div>
 
         <div
+          id="add-task"
+          className={`border p-2 rounded-lg cursor-pointer ${showPage == "add-task" && "bg-gray-400"}`}
+          onClick={() => setShowPage("add-task")}
+        >
+          <AddCircleOutlineIcon style={{ fontSize: "30px" }} />
+          <span className="text-md font-semibold">Add Task</span>
+        </div>
+
+        <div
           id="mode"
           className="p-2 rounded-3xl mt-auto flex justify-between gap-1 bg-gray-500"
         >
@@ -135,17 +148,18 @@ function Home() {
 
       <div className="w-full rounded-lg flex gap-4 flex-col">
         <div className="shadow-[0px_0px_3px_3px] p-2 rounded-lg">
-          {/* { time < "11:59:00 AM" && time >= "04:00:00 AM" && <h1>"Good Morning"</h1>} */}
-          {/* { time >= "12:00:00 PM" && time < "03:59:00 PM"  && <h1>"Good AfterNoon"</h1>}
-          { time >= "04:00:00 PM" && time >= "06:59:00 PM" && <h1>"Good Evening"</h1>}
-          { time >= "07:00:00 PM" && time >= "11:59:00 PM" && <h1>"Good Night"</h1>} */}
-
           <h1 className="text-2xl font-semibold tracking-[2px]">
-            Good Morning, {user?.name?.split(" ")[0]}
+            {greet >= 4 && greet < 12 && "Good Morning, "}
+            {greet >= 12 && greet < 16 && "Good Afternoon, "}
+            {greet >= 16 && greet < 20 && "Good Evening, "}
+            {greet >= 20 && greet < 24 && "Good Night, "}
+            {greet >= 0 && greet < 4 && "Good Night, "}
+
+            {user?.name?.split(" ")[0]}
           </h1>
           <p className="opacity-60">What do you plain to-do today</p>
         </div>
-        <div className="shadow-[0px_0px_3px_3px] h-full rounded-lg p-2">
+        <div className="shadow-[0px_0px_3px_3px] h-full w-full rounded-lg p-2 overflow-y-auto">
           {(() => {
             switch (showPage) {
               case "to-do":
@@ -156,32 +170,66 @@ function Home() {
                 return <AddTask />;
             }
           })()}
+          <ToastContainer />
         </div>
       </div>
 
       <nav
         id="lists"
-        className="shadow-[0px_0px_3px_3px] h-full w-90 p-2 rounded-xl flex flex-col gap-2 min-w-42"
+        className="shadow-[0px_0px_3px_3px] h-full w-90 p-2 rounded-xl sm:flex flex-col gap-2 min-w-42 hidden"
       >
-        <div className="flex justify-between text-xl items-center border-b pb-2 mb-4">
+        <div className="flex justify-between text-xl items-center border-b pb-2">
           <span className="font-semibold tracking-[2px]">LISTS</span>
-          <Link
-            onClick={() => setShowPage("add-task")}
-            className="text-blue-600 active:animate-spin"
-          >
-            <AddCircleOutlineIcon style={{ fontSize: "30px" }} />
-          </Link>
         </div>
 
-        {tasks?.map((task, idx) => {
-          let date = new Date(task?.todoDate).toLocaleDateString()
-          if(date === lastDate) return null
-          lastDate = date;
-          return <p key={idx}>{date}</p>
-        })}
-      </nav>
+        <div className="flex flex-col gap-2 overflow-y-auto">
+          {tasks?.map((task, idx) => {
+            let newdate = new Date(task?.todoDate).toLocaleDateString("en-IN");
+            if (dates.includes(newdate)) return;
+            dates.push(newdate);
+            return (
+              <div
+                key={idx}
+                className="flex flex-col border p-2 rounded-lg bg-gray-500"
+              >
+                <div className="w-full flex justify-between">
+                  <span className="cursor-pointer">{newdate}</span>
+                  {dateTask == newdate ? (
+                    <Link onClick={() => setDateTask("")}>
+                      <ArrowDropUpIcon />
+                    </Link>
+                  ) : (
+                    <Link onClick={() => setDateTask(newdate)}>
+                      <ArrowDropDownIcon />
+                    </Link>
+                  )}
+                </div>
 
-      <ToastContainer />
+                <ol className="flex flex-col gap-2">
+                  {dateTask == newdate &&
+                    tasks
+                      .filter((item) => {
+                        const dateD = new Date(
+                          item.todoDate,
+                        ).toLocaleDateString("en-IN");
+                        return dateD === newdate;
+                      })
+                      .map((item, idx) => {
+                        return (
+                          <p
+                            key={idx}
+                            className="w-full max-h-12 overflow-hidden border flex items-center px-1 rounded-lg bg-gray-400 mt-2"
+                          >
+                            {item.title}
+                          </p>
+                        );
+                      })}
+                </ol>
+              </div>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }

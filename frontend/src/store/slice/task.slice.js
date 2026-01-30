@@ -16,8 +16,8 @@ const taskSlice = createSlice({
       state.loading = true;
       state.taskError = null;
       state.taskMessage = null;
-      state.isUpdated = false
-      state.task = {}
+      state.isUpdated = false;
+      state.task = {};
     },
     getAllTaskSuccess(state, action) {
       state.loading = false;
@@ -50,21 +50,42 @@ const taskSlice = createSlice({
     taskDoneFailed(state, action) {
       state.isUpdated = false;
       state.taskError = action.payload;
-      state.task = {}
+      state.task = {};
     },
 
     // Add New Task
-    taskAddRequest(state,action){
-        state.loading = true;
+    taskAddRequest(state, action) {
+      state.loading = true;
     },
-    taskAddSuccess(state,action){
-        state.loading = false
-        state.taskMessage = action.payload.message;
-        state.task = action.payload.task
+    taskAddSuccess(state, action) {
+      state.loading = false;
+      state.taskMessage = action.payload.message;
+      state.task = action.payload.task;
     },
-    taskAddFailed(state,action){
-        state.loading = false;
-        state.error = action.payload;
+    taskAddFailed(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    // Edit task
+    taskEditRequest(state, action) {
+      state.loading = true;
+    },
+    taskEditSuccess(state, action) {
+      state.loading = false;
+      state.taskMessage = action.payload.message;
+      state.task = action.payload.task;
+      state.isUpdated = true
+    },
+    taskEditFailed(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+      state.isUpdated = false
+    },
+
+    // taskForEdit
+    taskForEdit(state,action){
+      state.task = action.payload;
     },
 
     // Clear Error
@@ -102,27 +123,47 @@ export const deleteTask = (id) => async (dispatch) => {
 
 export const taskDone = (id, isCompleted) => async (dispatch) => {
   try {
-    const { data } = await taskUrl.put(`/update/${id}`, {isCompleted : isCompleted},{
-      withCredentials: true,
-    });
+    const { data } = await taskUrl.put(
+      `/update/${id}`,
+      { isCompleted: isCompleted },
+      {
+        withCredentials: true,
+      },
+    );
     dispatch(taskSlice.actions.taskDoneSuccess(data));
-    dispatch(taskSlice.actions.clearAllError())
+    dispatch(taskSlice.actions.clearAllError());
   } catch (error) {
-    dispatch(taskSlice.actions.taskDoneFailed(error.response.data.message))
+    dispatch(taskSlice.actions.taskDoneFailed(error.response.data.message));
   }
 };
 
-export const taskAdd = (task)=>async(dispatch)=>{
-    console.log(task)
-    dispatch(taskSlice.actions.taskAddRequest())
-    try {
-        const {data} = await taskUrl.post(`/add`,task,{withCredentials : true})
-        dispatch(taskSlice.actions.taskAddSuccess(data))
-        dispatch(taskSlice.actions.clearAllError())
-    } catch (error) {
-        console.log(error)
-        // dispatch(taskSlice.actions.taskAddFailed(error.response.data.message))
-    }
+export const taskAdd = (task) => async (dispatch) => {
+  dispatch(taskSlice.actions.taskAddRequest());
+  try {
+    const { data } = await taskUrl.post(`/add`, task, {
+      withCredentials: true,
+    });
+    dispatch(taskSlice.actions.taskAddSuccess(data));
+    dispatch(taskSlice.actions.clearAllError());
+  } catch (error) {
+    dispatch(taskSlice.actions.taskAddFailed(error.response.data.message));
+  }
+};
+
+export const getTaskForEditPage = (id,tasks)=> (dispatch)=>{
+  const task = tasks.filter((task)=>task._id == id)
+  dispatch(taskSlice.actions.taskForEdit(task[0]))
+}
+
+export const taskEdit = (id,task)=>async(dispatch)=>{
+  dispatch(taskSlice.actions.taskEditRequest())
+  try {
+    const {data} = await taskUrl.put(`/update/${id}`,task,{withCredentials : true})
+    dispatch(taskSlice.actions.taskEditSuccess(data))
+    dispatch(taskSlice.actions.clearAllError())
+  } catch (error) {
+    dispatch(taskSlice.actions.taskEditFailed(error.response.data.message))
+  }
 }
 
 export default taskSlice.reducer;

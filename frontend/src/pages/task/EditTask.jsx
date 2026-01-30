@@ -1,34 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useDispatch } from "react-redux";
-import { taskAdd } from "../../store/slice/task.slice";
+import { useDispatch, useSelector } from "react-redux";
+import { taskEdit } from "../../store/slice/task.slice";
 
-function AddTask() {
-  const dispatch = useDispatch();
-
-  const [taskTitle, setTaskTitle] = useState("");
+function EditTask({ next }) {
+  const { task } = useSelector((state) => state.task);
+  const [taskTitle, setTaskTitle] = useState(task.title);
   const [date, setDate] = useState(new Date());
 
-  const [category, setCategory] = useState("Personal");
+  const [category, setCategory] = useState(task.category);
+  const dispatch = useDispatch();
 
-  const handleAddTask = (e) => {
+  const handleEditTask = (e, id) => {
     e.preventDefault();
     dispatch(
-      taskAdd({
+      taskEdit(id, {
         title: taskTitle,
-        category: category,
-        todoDate: date,
+        todoDate: new Date(date).toISOString(),
+        category,
       }),
     );
-    setTaskTitle("")
+    next()
   };
 
   return (
     <div className="w-full h-full p-2 rounded-lg">
       <h1 className="text-xl text-center mb-4 p-2 rounded-lg bg-gray-400 font-semibold text-blue-700">
-        Add New Task to-do
+        Edit Your Task
       </h1>
       <form className="flex flex-wrap gap-2 ">
         <div className="items-center flex gap-2 w-full p-2 rounded-lg bg-gray-400 font-semibold">
@@ -71,6 +71,7 @@ function AddTask() {
             id=""
             className="bg-gray-400 px-2 border rounded-lg cursor-pointer"
             onChange={(e) => setCategory(e.target.value)}
+            value={category}
           >
             <option value="Personal">Personal</option>
             <option value="Work">Work</option>
@@ -80,15 +81,14 @@ function AddTask() {
         <button
           type="submit"
           disabled={taskTitle == ""}
-          onClick={handleAddTask}
+          onClick={(e) => handleEditTask(e, task._id)}
           className="w-full border p-2 rounded-lg bg-blue-500 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >
-          Add To-Do
+          Update To-Do
         </button>
       </form>
     </div>
   );
 }
 
-// "Personal", "Work"
-export default AddTask;
+export default EditTask;

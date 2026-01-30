@@ -9,9 +9,6 @@ import httpCode from "http-status-codes";
 const addNewTask = asyncHandler(async (req, res, next) => {
   const { _id } = req.user;
   const { title, category, todoDate } = req.body;
-  // const subTask = req.body?.subTask;
-
-  console.log(req.body)
 
   if (!todoDate || !title || !category) {
     return next(new ErrorHandler("Please Enter All Feild", 400));
@@ -23,30 +20,6 @@ const addNewTask = asyncHandler(async (req, res, next) => {
     todoDate,
     category,
   });
-
-  // if (subTask?.length > 0) {
-  //   subTask?.map((sub) => {
-  //     if (!sub?.title) {
-  //       return next(new ErrorHandler("Enter Title for Sub Task", 400));
-  //     }
-  //     SubTask.create({
-  //       taskId: task._id,
-  //       title: sub.title,
-
-  //     })
-  //       .then((res) => {
-  //         console.log("Subtask created successfully");
-  //       })
-  //       .catch((err) => {
-  //         return next(
-  //           new ErrorHandler(
-  //             "something went wrong while creating subTask",
-  //             400,
-  //           ),
-  //         );
-  //       });
-  //   });
-  // }
 
   if (!task) {
     return next(new ErrorHandler("Something Went Wrong", 500));
@@ -89,18 +62,18 @@ const getAllTask = asyncHandler(async (req, res, next) => {
 // edit task
 const editTask = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
   const newData = {
     title: req.body?.title,
     category: req.body?.category,
+    todoDate : req.body?.todoDate,
     isCompleted: req.body?.isCompleted,
   };
 
   const SubTasks = await SubTask.find({ taskId: id });
-  const allIsNotComplete = SubTasks.some(sub => !sub.isCompleted)
-  
-  if(allIsNotComplete){
-    return next(new ErrorHandler("sub task is not completed yet."))
+  const allIsNotComplete = SubTasks.some((sub) => !sub.isCompleted);
+
+  if (allIsNotComplete) {
+    return next(new ErrorHandler("sub task is not completed yet."));
   }
 
   const task = await Task.findByIdAndUpdate(id, newData, { new: true });
