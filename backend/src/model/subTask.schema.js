@@ -10,7 +10,6 @@ const subTaskSchema = new Schema(
       type: String,
       required: true,
     },
-    todoDate: String,
     isCompleted: { type: Boolean, default: false },
   },
   { timestamps: true },

@@ -18,6 +18,7 @@ import {
   taskDone,
 } from "../../store/slice/task.slice";
 import { deleteSubTask } from "../../store/slice/subTask.slice";
+import AddSubTask from "../subrtask/AddSubTask";
 
 function AllTodo() {
   const dispatch = useDispatch();
@@ -35,14 +36,15 @@ function AllTodo() {
     dispatch(taskDone(id, JSON.parse(value)));
   };
 
-  const addSubTask = (e,taskId)=>{
-    console.log(taskId)
-  }
+  const goAddSubTask = (e, taskId) => {
+    e.preventDefault();
+    setShowPage("addSubTask");
+    dispatch(getTaskForEditPage(taskId, tasks));
+  };
 
-  const handleSubTaskDelete = (subTaskId)=>{
-    console.log(subTaskId)
-    dispatch(deleteSubTask(subTaskId))
-  }
+  const handleSubTaskDelete = (subTaskId) => {
+    dispatch(deleteSubTask(subTaskId));
+  };
 
   const goEditTask = (e, id) => {
     e.preventDefault();
@@ -52,7 +54,7 @@ function AllTodo() {
 
   return (
     <div className="overflow-y-scroll rounded-l-lg h-full w-full">
-      {showPage == "tasks" ? (
+      {showPage == "tasks" && (
         <>
           <h1 className="sticky top-0 p-2 flex flex-wrap justify-between text-lg font-semibold bg-gray-500 rounded-lg mb-2">
             <span className="flex flex-wrap">
@@ -142,10 +144,9 @@ function AllTodo() {
                             </Link>
                             <Link
                               className="active:text-blue-600  hover:text-blue-600"
-                              onClick={(e) => addSubTask(e, task._id)}
+                              onClick={(e) => goAddSubTask(e, task._id)}
                             >
                               <AddCircleOutlineIcon />
-                              
                             </Link>
                           </span>
                         </div>
@@ -171,9 +172,7 @@ function AllTodo() {
                                 <div className="flex gap-2">
                                   <Link
                                     className="active:text-red-600 hover:text-red-600"
-                                    onClick={() =>
-                                      handleSubTaskDelete(sub._id)
-                                    }
+                                    onClick={() => handleSubTaskDelete(sub._id)}
                                   >
                                     <DeleteForeverIcon />
                                   </Link>
@@ -195,9 +194,11 @@ function AllTodo() {
             })}
           </ul>
         </>
-      ) : (
-        <EditTask next={() => setShowPage("tasks")} />
       )}
+
+      {showPage == "editTask" && <EditTask next={() => setShowPage("tasks")} />}
+
+      {showPage == "addSubTask" && <AddSubTask next={() => setShowPage("tasks")}/>}
     </div>
   );
 }
