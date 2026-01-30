@@ -27,6 +27,9 @@ const editSubtask = asyncHandler(async (req, res, next) => {
     title: req.body?.title,
     isCompleted: req.body?.isCompleted,
   };
+
+  console.log(newData)
+
   const allSubTasks = await SubTask.findByIdAndUpdate(id, newData, {
     new: true,
   });
@@ -36,7 +39,7 @@ const editSubtask = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: newData.isCompleted ? "task marked as completed":"Sub task updated.",
+    message: newData.isCompleted ? "Subtask marked as completed":"Sub task updated.",
   });
 });
 

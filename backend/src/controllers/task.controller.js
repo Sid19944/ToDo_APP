@@ -65,15 +65,16 @@ const editTask = asyncHandler(async (req, res, next) => {
   const newData = {
     title: req.body?.title,
     category: req.body?.category,
-    todoDate : req.body?.todoDate,
+    todoDate: req.body?.todoDate,
     isCompleted: req.body?.isCompleted,
   };
 
   const SubTasks = await SubTask.find({ taskId: id });
-  const allIsNotComplete = SubTasks.some((sub) => !sub.isCompleted);
-
-  if (allIsNotComplete) {
-    return next(new ErrorHandler("sub task is not completed yet."));
+  if (newData.isCompleted) {
+    const allIsNotComplete = SubTasks.some((sub) => !sub.isCompleted);
+    if (allIsNotComplete) {
+      return next(new ErrorHandler("sub task is not completed yet."));
+    }
   }
 
   const task = await Task.findByIdAndUpdate(id, newData, { new: true });

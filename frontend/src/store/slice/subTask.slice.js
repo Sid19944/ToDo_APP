@@ -4,7 +4,7 @@ import { subTaskUrl } from "../../Api";
 const subTaskSlice = createSlice({
   name: "subTask",
   initialState: {
-    loading: false,
+    subLoading: false,
     subTask: {},
     subTaskError: null,
     subTaskMessage: null,
@@ -13,39 +13,57 @@ const subTaskSlice = createSlice({
   reducers: {
     // Add sub task
     addSubTaskRequest(state, action) {
-      state.loading = true;
+      state.subLoading = true;
       state.subTaskMessage = null;
       state.subTaskError = null;
     },
     addSubTaskSuccess(state, action) {
-      state.loading = false;
+      state.subLoading = false;
       state.subTask = action.payload.subTask;
       state.subTaskMessage = action.payload.message;
     },
     addSubTaskFailder(state, action) {
-      state.loading = false;
+      state.subLoading = false;
       state.subTaskError = action.payload;
     },
 
     // Delete subtask
     deleteSubTaskRequest(state, action) {
-      state.loading = true;
+      state.subLoading = true;
       state.subTaskMessage = null;
       state.subTaskError = null;
     },
     deleteSubTaskSuccess(state, action) {
-      state.loading = false;
+      state.subLoading = false;
       state.subTask = {};
       state.subTaskMessage = action.payload;
     },
     deleteSubTaskFailder(state, action) {
-      state.loading = false;
+      state.subLoading = false;
+      state.subTaskError = action.payload;
+    },
+
+    // subTask Done
+    subTaskEditRequest(state, action) {
+      state.subLoading = true;
+    },
+    subTaskEditSuccess(state, action) {
+      state.subLoading = false;
+      state.isUpdated = true;
+      state.subTaskMessage = action.payload;
+    },
+    subTaskEditFailed(state, action) {
+      state.subLoading = false;
+      state.isUpdated = false;
       state.subTaskError = action.payload;
     },
 
     // clear Error
     clearAllError(state, action) {
       state.subTaskError = null;
+    },
+    clearAllMsg(state, action) {
+      state.subTaskMessage = null;
     },
   },
 });
@@ -65,10 +83,10 @@ export const addSubTask = (taskId, subTask) => async (dispatch) => {
   }
 };
 
-export const deleteSubTask = (subTaskID) => async (dispatch) => {
+export const deleteSubTask = (subTaskId) => async (dispatch) => {
   dispatch(subTaskSlice.actions.deleteSubTaskRequest());
   try {
-    const { data } = await subTaskUrl.delete(`/delete/${subTaskID}`, {
+    const { data } = await subTaskUrl.delete(`/delete/${subTaskId}`, {
       withCredentials: true,
     });
     dispatch(subTaskSlice.actions.deleteSubTaskSuccess(data.message));
@@ -79,5 +97,24 @@ export const deleteSubTask = (subTaskID) => async (dispatch) => {
     );
   }
 };
+
+export const editSubTask = (subTaskId, newData) => async (dispatch) => {
+  dispatch(subTaskSlice.actions.subTaskEditRequest());
+  try {
+    const { data } = await subTaskUrl.put(`/update/${subTaskId}`, newData, {
+      withCredentials: true,
+    });
+    dispatch(subTaskSlice.actions.subTaskEditSuccess(data.message));
+    dispatch(subTaskSlice.actions.clearAllError());
+  } catch (error) {
+    dispatch(
+      subTaskSlice.actions.subTaskEditFailed(error.response.data.message),
+    );
+  }
+};
+
+export const clearSubMsg= ()=>(dispatch)=>{
+    dispatch(subTaskSlice.actions.clearAllMsg())
+}
 
 export default subTaskSlice.reducer;

@@ -17,7 +17,7 @@ import {
   getTaskForEditPage,
   taskDone,
 } from "../../store/slice/task.slice";
-import { deleteSubTask } from "../../store/slice/subTask.slice";
+import { deleteSubTask, editSubTask } from "../../store/slice/subTask.slice";
 import AddSubTask from "../subrtask/AddSubTask";
 
 function AllTodo() {
@@ -44,6 +44,10 @@ function AllTodo() {
 
   const handleSubTaskDelete = (subTaskId) => {
     dispatch(deleteSubTask(subTaskId));
+  };
+
+  const handleSubTaskDone = (value, subTaskId) => {
+    dispatch(editSubTask(subTaskId, { isCompleted: JSON.parse(value) }));
   };
 
   const goEditTask = (e, id) => {
@@ -158,17 +162,22 @@ function AllTodo() {
                                 key={sub._id}
                                 className="border px-1 rounded-lg flex w-full justify-between bg-gray-400 items-center"
                               >
-                                <input
-                                  type="checkbox"
-                                  className="w-5 h-4 accent-purple-600"
-                                  checked={sub.isCompleted}
-                                  value={!sub.isCompleted}
-                                  // onChange={(e) =>
-                                  // handleSubTaskDone(e.target.value, sub._id)
-                                  // }
-                                />
-                                <span>{sub.title}</span>
-
+                                <div className="flex gap-1 items-center">
+                                  <input
+                                    type="checkbox"
+                                    className="w-5 h-4 accent-purple-600"
+                                    checked={sub.isCompleted}
+                                    value={!sub.isCompleted}
+                                    onChange={(e) =>
+                                      handleSubTaskDone(e.target.value, sub._id)
+                                    }
+                                  />
+                                  <span
+                                    className={`${sub.isCompleted && "line-through"} ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}
+                                  >
+                                    {sub.title}
+                                  </span>
+                                </div>
                                 <div className="flex gap-2">
                                   <Link
                                     className="active:text-red-600 hover:text-red-600"
@@ -198,7 +207,9 @@ function AllTodo() {
 
       {showPage == "editTask" && <EditTask next={() => setShowPage("tasks")} />}
 
-      {showPage == "addSubTask" && <AddSubTask next={() => setShowPage("tasks")}/>}
+      {showPage == "addSubTask" && (
+        <AddSubTask next={() => setShowPage("tasks")} />
+      )}
     </div>
   );
 }

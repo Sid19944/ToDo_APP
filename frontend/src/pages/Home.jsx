@@ -18,6 +18,7 @@ import { getAllTasks } from "../store/slice/task.slice";
 
 import AddTask from "./task/AddTask";
 import AllTodo from "./task/AllTodo";
+import { clearSubMsg } from "../store/slice/subTask.slice";
 
 function Home() {
   const [showPage, setShowPage] = useState("to-do");
@@ -34,7 +35,7 @@ function Home() {
   const { tasks, task, taskError, taskMessage } = useSelector(
     (state) => state.task,
   );
-  const { subTaskError, subTaskMessage } = useSelector(
+  const { subLoading, subTaskError, subTaskMessage } = useSelector(
     (state) => state.subTask,
   );
 
@@ -67,11 +68,13 @@ function Home() {
 
   useEffect(() => {
     dispatch(getAllTasks());
+
     if (subTaskError) {
       toast.error(subTaskError, { position: "bottom-left" });
     }
     if (subTaskMessage) {
       toast.success(subTaskMessage, { position: "bottom-left" });
+      dispatch(clearSubMsg());
     }
   }, [subTaskError, subTaskMessage]);
   return (
