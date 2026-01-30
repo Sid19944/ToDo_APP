@@ -58,6 +58,11 @@ const subTaskSlice = createSlice({
       state.subTaskError = action.payload;
     },
 
+    // select SubTask
+    selectSubTask(state, action) {
+      state.subTask = action.payload;
+    },
+
     // clear Error
     clearAllError(state, action) {
       state.subTaskError = null;
@@ -98,6 +103,12 @@ export const deleteSubTask = (subTaskId) => async (dispatch) => {
   }
 };
 
+export const selectSubTaskToEdit = (subTaskId, taskId, tasks) => (dispatch) => {
+  const task = tasks.filter((task) => task._id == taskId);
+  const subTask = task[0].subTask.filter((sub) => sub._id == subTaskId);
+  dispatch(subTaskSlice.actions.selectSubTask(subTask[0]));
+};
+
 export const editSubTask = (subTaskId, newData) => async (dispatch) => {
   dispatch(subTaskSlice.actions.subTaskEditRequest());
   try {
@@ -113,8 +124,8 @@ export const editSubTask = (subTaskId, newData) => async (dispatch) => {
   }
 };
 
-export const clearSubMsg= ()=>(dispatch)=>{
-    dispatch(subTaskSlice.actions.clearAllMsg())
-}
+export const clearSubMsg = () => (dispatch) => {
+  dispatch(subTaskSlice.actions.clearAllMsg());
+};
 
 export default subTaskSlice.reducer;

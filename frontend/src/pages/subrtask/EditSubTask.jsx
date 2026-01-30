@@ -1,22 +1,24 @@
 import React, { useState } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-import { addSubTask } from "../../store/slice/subTask.slice";
+import { editSubTask } from "../../store/slice/subTask.slice";
 
-function AddSubTask({ next }) {
+function EditSubTask({ next }) {
   const dispatch = useDispatch();
-  const { task } = useSelector((state) => state.task);
-  const [subTaskTitle, setSubTaskTitle] = useState("");
+  const { subTask } = useSelector((state) => state.subTask);
+  const [subTaskTitle, setSubTaskTitle] = useState(subTask.title);
 
-  const handleAddSubTask = (e) => {
+  const EditSubTask = (e, subTaskId) => {
     e.preventDefault();
-    dispatch(addSubTask(task._id, { title: subTaskTitle }));
+    dispatch(editSubTask(subTaskId, { title: subTaskTitle }));
     next();
   };
+
   return (
     <div className="w-full h-full p-2 rounded-lg">
-      <h1 className={`text-sm text-center mb-4 p-2 rounded-lg bg-gray-400 font-semibold ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}>
-        Add Sub Task For : {task.title}
+      <h1
+        className={`text-lg text-blue-700 text-center mb-4 p-2 rounded-lg bg-gray-400 font-semibold `}
+      >
+        Edit Your Task
       </h1>
       <form className="flex flex-wrap gap-2 ">
         <div className="w-full flex flex-wrap p-2 rounded-lg bg-gray-400 gap-2">
@@ -40,14 +42,14 @@ function AddSubTask({ next }) {
         <button
           type="submit"
           disabled={subTaskTitle == ""}
-          onClick={handleAddSubTask}
+          onClick={(e) => EditSubTask(e, subTask._id)}
           className="w-full border p-2 rounded-lg bg-blue-500 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >
-          Add Sub To-Do
+          Update Sub To-Do
         </button>
       </form>
     </div>
   );
 }
 
-export default AddSubTask;
+export default EditSubTask;

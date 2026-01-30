@@ -17,8 +17,13 @@ import {
   getTaskForEditPage,
   taskDone,
 } from "../../store/slice/task.slice";
-import { deleteSubTask, editSubTask } from "../../store/slice/subTask.slice";
+import {
+  deleteSubTask,
+  editSubTask,
+  selectSubTaskToEdit,
+} from "../../store/slice/subTask.slice";
 import AddSubTask from "../subrtask/AddSubTask";
+import EditSubTask from "../subrtask/EditSubTask";
 
 function AllTodo() {
   const dispatch = useDispatch();
@@ -48,6 +53,12 @@ function AllTodo() {
 
   const handleSubTaskDone = (value, subTaskId) => {
     dispatch(editSubTask(subTaskId, { isCompleted: JSON.parse(value) }));
+  };
+
+  const goEditSubTask = (e, subTaskId, taskId) => {
+    e.preventDefault();
+    setShowPage("editSubTask");
+    dispatch(selectSubTaskToEdit(subTaskId, taskId, tasks));
   };
 
   const goEditTask = (e, id) => {
@@ -187,7 +198,9 @@ function AllTodo() {
                                   </Link>
                                   <Link
                                     className="active:text-green-600 hover:text-green-600"
-                                    onClick={(e) => goEditTask(e, sub._id)}
+                                    onClick={(e) =>
+                                      goEditSubTask(e, sub._id, task._id)
+                                    }
                                   >
                                     <EditDocumentIcon />
                                   </Link>
@@ -209,6 +222,10 @@ function AllTodo() {
 
       {showPage == "addSubTask" && (
         <AddSubTask next={() => setShowPage("tasks")} />
+      )}
+
+      {showPage == "editSubTask" && (
+        <EditSubTask next={() => setShowPage("tasks")} />
       )}
     </div>
   );
