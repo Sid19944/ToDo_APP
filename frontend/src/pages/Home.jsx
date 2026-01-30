@@ -26,8 +26,6 @@ function Home() {
   const greet = new Date().getHours();
   const dates = [];
 
-  const time = new Date().toLocaleTimeString();
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuthenticated, error, message, user } = useSelector(
@@ -36,10 +34,14 @@ function Home() {
   const { tasks, task, taskError, taskMessage } = useSelector(
     (state) => state.task,
   );
+  const { subTaskError, subTaskMessage } = useSelector(
+    (state) => state.subTask,
+  );
 
   const handleLogout = () => {
     dispatch(logoutUser());
   };
+
   useEffect(() => {
     if (Object.keys(user).length == 0) dispatch(getUser());
     if (!isAuthenticated) {
@@ -62,6 +64,16 @@ function Home() {
       toast.success(taskMessage, { position: "bottom-left" });
     }
   }, [taskError, taskMessage]);
+
+  useEffect(() => {
+    dispatch(getAllTasks());
+    if (subTaskError) {
+      toast.error(subTaskError, { position: "bottom-left" });
+    }
+    if (subTaskMessage) {
+      toast.success(subTaskMessage, { position: "bottom-left" });
+    }
+  }, [subTaskError, subTaskMessage]);
   return (
     <div
       className={`h-screen font-serif p-2 ${mode == "light" ? "bg-white text-black" : "bg-black text-white"} flex gap-4 w-full`}

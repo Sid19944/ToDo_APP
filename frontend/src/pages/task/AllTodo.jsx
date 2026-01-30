@@ -17,6 +17,7 @@ import {
   getTaskForEditPage,
   taskDone,
 } from "../../store/slice/task.slice";
+import { deleteSubTask } from "../../store/slice/subTask.slice";
 
 function AllTodo() {
   const dispatch = useDispatch();
@@ -33,6 +34,15 @@ function AllTodo() {
   const handleTaskDone = (value, id) => {
     dispatch(taskDone(id, JSON.parse(value)));
   };
+
+  const addSubTask = (e,taskId)=>{
+    console.log(taskId)
+  }
+
+  const handleSubTaskDelete = (subTaskId)=>{
+    console.log(subTaskId)
+    dispatch(deleteSubTask(subTaskId))
+  }
 
   const goEditTask = (e, id) => {
     e.preventDefault();
@@ -132,7 +142,7 @@ function AllTodo() {
                             </Link>
                             <Link
                               className="active:text-blue-600  hover:text-blue-600"
-                              onClick={(e) => goEditTask(e, task._id)}
+                              onClick={(e) => addSubTask(e, task._id)}
                             >
                               <AddCircleOutlineIcon />
                               
@@ -153,7 +163,7 @@ function AllTodo() {
                                   checked={sub.isCompleted}
                                   value={!sub.isCompleted}
                                   // onChange={(e) =>
-                                  // handleSubTaskDone(e.target.value, task._id)  // TODO
+                                  // handleSubTaskDone(e.target.value, sub._id)
                                   // }
                                 />
                                 <span>{sub.title}</span>
@@ -162,14 +172,14 @@ function AllTodo() {
                                   <Link
                                     className="active:text-red-600 hover:text-red-600"
                                     onClick={() =>
-                                      handleTaskDelete(task.subTask._id)
+                                      handleSubTaskDelete(sub._id)
                                     }
                                   >
                                     <DeleteForeverIcon />
                                   </Link>
                                   <Link
                                     className="active:text-green-600 hover:text-green-600"
-                                    onClick={(e) => goEditTask(e, task._id)}
+                                    onClick={(e) => goEditTask(e, sub._id)}
                                   >
                                     <EditDocumentIcon />
                                   </Link>
