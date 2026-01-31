@@ -73,9 +73,9 @@ function AllTodo() {
         <>
           <h1 className="sticky top-0 p-2 flex flex-wrap justify-between text-lg font-semibold bg-gray-500 rounded-lg mb-2">
             <span className="flex flex-wrap">
-              Tasks for{" "}
+              Tasks for
               {new Date().toLocaleDateString("en-IN") ==
-                date.toLocaleDateString("en-IN") && "Today"}{" "}
+                date.toLocaleDateString("en-IN") && "Today"}
               &nbsp;
               <DatePicker
                 id="date"

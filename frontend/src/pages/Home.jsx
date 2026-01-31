@@ -10,9 +10,10 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LogoutIcon from "@mui/icons-material/Logout";
-
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import ClearIcon from "@mui/icons-material/Clear";
 
 import { getAllTasks } from "../store/slice/task.slice";
 
@@ -25,6 +26,7 @@ function Home() {
   const [showPage, setShowPage] = useState("to-do");
   const [mode, setMode] = useState("dark");
   const [dateTask, setDateTask] = useState("");
+  const [showMenu, setShowMenu] = useState(false);
   const greet = new Date().getHours();
   const dates = [];
 
@@ -82,7 +84,11 @@ function Home() {
     <div
       className={`h-screen font-serif p-2 ${mode == "light" ? "bg-white text-black" : "bg-black text-white"} flex gap-4 w-full`}
     >
-      <nav className="shadow-[0px_0px_3px_3px] h-full w-60 p-2 rounded-xl md:flex flex-col gap-2 hidden md:w-50 lg:w-60">
+      {/* Nav for desktop */}
+      <nav
+        id="desktop-nav"
+        className="shadow-[0px_0px_3px_3px] h-full w-60 p-2 rounded-xl md:flex flex-col gap-2 hidden md:w-50 lg:w-60"
+      >
         <div
           id="logo"
           className="w-full flex items-center gap-2 border-b pb-2 mb-2"
@@ -92,15 +98,15 @@ function Home() {
         </div>
         <div
           id="to-do"
-          className={`border p-2 rounded-lg cursor-pointer ${showPage == "to-do" && "bg-gray-400"}`}
+          className={`border p-2 rounded-lg cursor-pointer ${showPage == "to-do" ? "bg-blue-400" : "bg-gray-400"}`}
           onClick={() => setShowPage("to-do")}
         >
           <i className="fa-solid fa-clipboard-list text-2xl" />
-          <span className={`text-md font-semibold`}>To-do</span>
+          <span className={`text-md font-semibold`}>All To-Do</span>
         </div>
         <div
           id="analytics"
-          className={`border p-2 rounded-lg cursor-pointer ${showPage == "analytics" && "bg-gray-400"}`}
+          className={`border p-2 rounded-lg cursor-pointer ${showPage == "analytics" ? "bg-blue-400" : "bg-gray-400"}`}
           onClick={() => setShowPage("analytics")}
         >
           <AnalyticsIcon style={{ fontSize: "30px" }} />
@@ -109,7 +115,7 @@ function Home() {
 
         <div
           id="add-task"
-          className={`border p-2 rounded-lg cursor-pointer ${showPage == "add-task" && "bg-gray-400"}`}
+          className={`border p-2 rounded-lg cursor-pointer ${showPage == "add-task" ? "bg-blue-400" : "bg-gray-400"}`}
           onClick={() => setShowPage("add-task")}
         >
           <AddCircleOutlineIcon style={{ fontSize: "30px" }} />
@@ -163,6 +169,89 @@ function Home() {
       </nav>
 
       <div className="w-full rounded-lg flex gap-4 flex-col">
+        <nav
+          id="mobile-nav"
+          className={`flex border-b items-center bg-gray-800 justify-center p-2 rounded-lg text-white gap-2 md:hidden`}
+        >
+          <div id="logo" className="w-full flex items-center gap-2">
+            <img src="/logo.png" alt="logo" className="w-10" />
+            <h1 className={`text-2xl font-semibold tracking-[2px]`}>TODO</h1>
+          </div>
+
+          <div className="flex gap-2">
+            <span
+              className={`border rounded-[100%] p-1 flex justify-center items-center bg-white text-black ${mode == "light" && "blur-[1px] "}`}
+              onClick={() => setMode("light")}
+            >
+              <LightModeIcon
+                className={`${mode == "light" && "animate-spin "}`}
+                style={{ animationDuration: "5s" }}
+              />
+            </span>
+            <span
+              className={`border rounded-[100%] p-1 flex justify-center items-center ${mode == "dark" && "blur-[1px] "}`}
+              onClick={() => setMode("dark")}
+            >
+              <DarkModeIcon />
+            </span>
+          </div>
+
+          <div
+            onClick={() => setShowMenu(!showMenu)}
+            className="cursor-pointer"
+          >
+            {showMenu ? (
+              <ClearIcon style={{ height: "35px", width: "35px" }} />
+            ) : (
+              <FormatListBulletedIcon
+                style={{ height: "35px", width: "35px" }}
+              />
+            )}
+          </div>
+
+          {showMenu && (
+            <div className="absolute right-4 top-15 w-40 border rounded-lg bg-gray-800 p-2 flex flex-col gap-2 z-10">
+              <Link
+                className={`border p-1 rounded-lg ${showPage == "to-do" ? "bg-blue-700" : "bg-gray-600"}`}
+                onClick={() => {
+                  setShowPage("to-do");
+                  setShowMenu(!showMenu);
+                }}
+              >
+                All To-Do
+              </Link>
+              <Link
+                className={`border p-1 rounded-lg ${showPage == "analytics" ? "bg-blue-700" : "bg-gray-600"}`}
+                onClick={() => {
+                  setShowPage("analytics");
+                  setShowMenu(!showMenu);
+                }}
+              >
+                <AnalyticsIcon /> Analytics
+              </Link>
+              <Link
+                className={`border p-1 rounded-lg flex items-center gap-1 ${showPage == "add-task" ? "bg-blue-700" : "bg-gray-600"}`}
+                onClick={() => {
+                  setShowPage("add-task");
+                  setShowMenu(!showMenu);
+                }}
+              >
+                <AddCircleOutlineIcon /> Add Task
+              </Link>
+              <div className="flex gap-2 items-center border p-1 rounded-lg bg-gray-600">
+                <img
+                  src={user.avatar}
+                  alt="avatar"
+                  className="w-10 rounded-[100%] border"
+                />
+                <Link onClick={handleLogout}>
+                  <LogoutIcon /> Logout
+                </Link>
+              </div>
+            </div>
+          )}
+        </nav>
+
         <div className="shadow-[0px_0px_3px_3px] p-2 rounded-lg">
           <h1 className="text-2xl font-semibold tracking-[2px]">
             {greet >= 4 && greet < 12 && "Good Morning, "}
@@ -181,7 +270,7 @@ function Home() {
               case "to-do":
                 return <AllTodo />;
               case "analytics":
-                return <Analytics/>;
+                return <Analytics />;
               case "add-task":
                 return <AddTask />;
             }
@@ -192,10 +281,10 @@ function Home() {
 
       <nav
         id="lists"
-        className="shadow-[0px_0px_3px_3px] h-full w-90 p-2 rounded-xl sm:flex flex-col gap-2 min-w-42 hidden"
+        className="shadow-[0px_0px_3px_3px] h-full w-90 p-2 rounded-xl md:flex flex-col gap-2 min-w-42 hidden"
       >
-        <div className="flex justify-between text-xl items-center border-b pb-2">
-          <span className="font-semibold tracking-[2px]">LISTS</span>
+        <div className="flex justify-between text-lg items-center border-b pb-2">
+          <span className="font-semibold tracking-[2px]">DATES TO-DO</span>
         </div>
 
         <div className="flex flex-col gap-2 overflow-y-auto">

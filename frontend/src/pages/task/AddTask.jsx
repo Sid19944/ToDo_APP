@@ -31,7 +31,7 @@ function AddTask() {
         Add New Task to-do
       </h1>
       <form className="flex flex-wrap gap-2 ">
-        <div className="items-center flex gap-2 w-full p-2 rounded-lg bg-gray-400 font-semibold">
+        <div className="items-center flex gap-2 w-full p-2 rounded-lg bg-gray-400 font-semibold flex-wrap">
           <label htmlFor="date " className="underline">
             Select Date to-do :
           </label>
