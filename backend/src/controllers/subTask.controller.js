@@ -28,8 +28,6 @@ const editSubtask = asyncHandler(async (req, res, next) => {
     isCompleted: req.body?.isCompleted,
   };
 
-  console.log(newData)
-
   const allSubTasks = await SubTask.findByIdAndUpdate(id, newData, {
     new: true,
   });
