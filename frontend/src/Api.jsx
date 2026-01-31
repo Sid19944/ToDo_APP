@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:3000";
+const url = "https://to-do-backend-wqsz.onrender.com";
 
 const userUrl = axios.create({
   baseURL: `${url}/auth`,

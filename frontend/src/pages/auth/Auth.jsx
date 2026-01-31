@@ -13,13 +13,13 @@ import { getUser } from "../../store/slice/user.slice";
 
 function Auth() {
   const handleGoogleLogin = async (e) => {
-    window.location.href = "http://localhost:3000/auth/google";
+    window.location.href = "https://to-do-backend-wqsz.onrender.com/auth/google";
     e.preventDefault();
     await userUrl.get("/google");
   };
 
   const handleGithubLogin = async (e) => {
-    window.location.href = "http://localhost:3000/auth/github";
+    window.location.href = "https://to-do-backend-wqsz.onrender.com/auth/github";
     e.preventDefault();
     await userUrl.get("/github");
   };
