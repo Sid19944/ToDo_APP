@@ -19,6 +19,7 @@ import { getAllTasks } from "../store/slice/task.slice";
 import AddTask from "./task/AddTask";
 import AllTodo from "./task/AllTodo";
 import { clearSubMsg } from "../store/slice/subTask.slice";
+import Analytics from "./analytics/Analytics";
 
 function Home() {
   const [showPage, setShowPage] = useState("to-do");
@@ -81,7 +82,7 @@ function Home() {
     <div
       className={`h-screen font-serif p-2 ${mode == "light" ? "bg-white text-black" : "bg-black text-white"} flex gap-4 w-full`}
     >
-      <nav className="shadow-[0px_0px_3px_3px] h-full w-60 p-2 rounded-xl md:flex flex-col gap-2 hidden ">
+      <nav className="shadow-[0px_0px_3px_3px] h-full w-60 p-2 rounded-xl md:flex flex-col gap-2 hidden md:w-50 lg:w-60">
         <div
           id="logo"
           className="w-full flex items-center gap-2 border-b pb-2 mb-2"
@@ -180,7 +181,7 @@ function Home() {
               case "to-do":
                 return <AllTodo />;
               case "analytics":
-                return "Analytics";
+                return <Analytics/>;
               case "add-task":
                 return <AddTask />;
             }
