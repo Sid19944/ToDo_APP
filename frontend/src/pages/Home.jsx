@@ -169,6 +169,7 @@ function Home() {
       </nav>
 
       <div className="w-full rounded-lg flex gap-4 flex-col">
+        {/* Nav for Mobile */}
         <nav
           id="mobile-nav"
           className={`flex border-b items-center bg-gray-800 justify-center p-2 rounded-lg text-white gap-2 md:hidden`}
@@ -252,6 +253,7 @@ function Home() {
           )}
         </nav>
 
+        {/* Data Component */}
         <div className="shadow-[0px_0px_3px_3px] p-2 rounded-lg">
           <h1 className="text-2xl font-semibold tracking-[2px]">
             {greet >= 4 && greet < 12 && "Good Morning, "}
@@ -279,6 +281,7 @@ function Home() {
         </div>
       </div>
 
+      {/* Side List  */}
       <nav
         id="lists"
         className="shadow-[0px_0px_3px_3px] h-full w-90 p-2 rounded-xl md:flex flex-col gap-2 min-w-42 hidden"
@@ -323,7 +326,8 @@ function Home() {
                         return (
                           <p
                             key={idx}
-                            className="w-full max-h-12 overflow-hidden border flex items-center px-1 rounded-lg bg-gray-400 mt-2"
+                            className={`w-full max-h-12 overflow-hidden border flex items-center px-1 rounded-lg bg-gray-400 mt-2 ${item.isCompleted == true && "line-through"}
+                             ${item.category == "Work" ? "text-purple-600" : "text-yellow-300"}`}
                           >
                             {item.title}
                           </p>
