@@ -326,7 +326,7 @@ function Home() {
                         return (
                           <p
                             key={idx}
-                            className={`w-full max-h-12 overflow-hidden border flex items-center px-1 rounded-lg bg-gray-400 mt-2 ${item.isCompleted == true && "line-through"}
+                            className={`w-full max-h-12 overflow-hidden border flex items-center px-1 rounded-lg bg-gray-400 mt-2 ${item.isCompleted == true && "line-through opacity-70"}
                              ${item.category == "Work" ? "text-purple-600" : "text-yellow-300"}`}
                           >
                             {item.title}
