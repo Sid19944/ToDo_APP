@@ -165,7 +165,7 @@ function AllTodo() {
                             </Link>
                           </span>
                         </div>
-                        <div className="w-full bg-gray-400 px-2 rounded-lg">
+                        <div className={`w-full bg-gray-400 px-2 rounded-lg ${task.isCompleted && "line-through"}`}>
                           {task.description}
                         </div>
 
@@ -216,13 +216,16 @@ function AllTodo() {
                                     </Link>
                                   </div>
                                 </div>
-                                <div className="w-full bg-gray-400 px-2 rounded-lg">
+                                <div className={`w-full bg-gray-400 px-2 rounded-lg ${sub.isCompleted && "line-through"}`}>
                                   {sub.description}
                                 </div>
                               </li>
                             ))}
                           </ol>
                         )}
+                        <span className={`w-full flex items-center gap-1 ${task.priority == "low" && "text-yellow-300 "} ${task.priority == "medium" && "text-green-300"} ${task.priority == "high" && "text-red-500"}`}>
+                          <span className={`w-2 h-2 rounded-[100%] ${task.priority == "low" && "bg-yellow-300 "} ${task.priority == "medium" && "bg-green-300"} ${task.priority == "high" && "bg-red-500"} `}></span>
+                          {task.priority}</span>
                       </li>
                     );
                   })
