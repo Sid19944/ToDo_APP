@@ -31,7 +31,7 @@ function Auth() {
   useEffect(() => {
     if (Object.keys(user).length == 0) dispacth(getUser());
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/home");
     }
   }, [isAuthenticated]);
 
