@@ -9,7 +9,7 @@ const addNewSubTask = asyncHandler(async (req, res, next) => {
   if (!title || !description) {
     return next(new ErrorHandler("Please enter Details.", 400));
   }
-  const subTask = await SubTask.create({ taskId: id, title });
+  const subTask = await SubTask.create({ taskId: id, title, description });
   if (!subTask) {
     return next(new ErrorHandler("Something Went Wrong", 500));
   }
