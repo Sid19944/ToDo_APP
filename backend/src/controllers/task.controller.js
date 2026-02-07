@@ -8,9 +8,9 @@ import httpCode from "http-status-codes";
 // add new task
 const addNewTask = asyncHandler(async (req, res, next) => {
   const { _id } = req.user;
-  const { title, category, todoDate } = req.body;
+  const { title, category, todoDate, description, priority } = req.body;
 
-  if (!todoDate || !title || !category) {
+  if (!todoDate || !title || !category || !description) {
     return next(new ErrorHandler("Please Enter All Feild", 400));
   }
 
@@ -18,6 +18,8 @@ const addNewTask = asyncHandler(async (req, res, next) => {
     userId: _id,
     title,
     todoDate,
+    description,
+    priority,
     category,
   });
 
@@ -66,6 +68,8 @@ const editTask = asyncHandler(async (req, res, next) => {
     title: req.body?.title,
     category: req.body?.category,
     todoDate: req.body?.todoDate,
+    description: req.body?.description,
+    priority: req.body?.priority,
     isCompleted: req.body?.isCompleted,
   };
 

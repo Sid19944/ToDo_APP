@@ -11,6 +11,15 @@ const taskSchema = new Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: true,
+    },
+    priority: {
+      type: String,
+      enum :["low", "medium", "high"],
+      required: true,
+    },
     category: {
       type: String,
       enum: ["Personal", "Work"],

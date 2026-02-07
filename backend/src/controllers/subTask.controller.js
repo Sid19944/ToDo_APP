@@ -5,9 +5,9 @@ import { SubTask } from "../model/subTask.schema.js";
 // create new subtask
 const addNewSubTask = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const { title } = req.body;
-  if (!title) {
-    return next(new ErrorHandler("Please enter title.", 400));
+  const { title, description } = req.body;
+  if (!title || !description) {
+    return next(new ErrorHandler("Please enter Details.", 400));
   }
   const subTask = await SubTask.create({ taskId: id, title });
   if (!subTask) {
@@ -25,6 +25,7 @@ const editSubtask = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const newData = {
     title: req.body?.title,
+    description: req.body?.description,
     isCompleted: req.body?.isCompleted,
   };
 
@@ -37,7 +38,9 @@ const editSubtask = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: newData.isCompleted ? "Subtask marked as completed":"Sub task updated.",
+    message: newData.isCompleted
+      ? "Subtask marked as completed"
+      : "Sub task updated.",
   });
 });
 
