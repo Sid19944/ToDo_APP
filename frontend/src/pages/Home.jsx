@@ -273,7 +273,7 @@ function Home() {
               case "analytics":
                 return <Analytics />;
               case "add-task":
-                return <AddTask />;
+                return <AddTask next={(e)=>setShowPage("to-do")}/>;
             }
           })()}
           <ToastContainer />

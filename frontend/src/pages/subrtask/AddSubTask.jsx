@@ -53,13 +53,13 @@ function AddSubTask({ next }) {
             rows={4}
             className="border w-full p-1 px-2 rounded-lg outline-purple-400"
             value={subTaskDescription}
-            onChange={(e)=>setSubTaskDescription(e.target.value)}
+            onChange={(e) => setSubTaskDescription(e.target.value)}
           ></textarea>
         </div>
 
         <button
           type="submit"
-          disabled={subTaskTitle == ""}
+          disabled={subTaskTitle == "" || subTaskDescription == ""}
           onClick={handleAddSubTask}
           className="w-full border p-2 rounded-lg bg-blue-500 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >

@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch } from "react-redux";
 import { taskAdd } from "../../store/slice/task.slice";
 
-function AddTask() {
+function AddTask({next}) {
   const dispatch = useDispatch();
 
   const [taskTitle, setTaskTitle] = useState("");
@@ -27,6 +27,7 @@ function AddTask() {
       }),
     );
     setTaskTitle("");
+    next()
   };
 
   return (
@@ -117,7 +118,7 @@ function AddTask() {
 
         <button
           type="submit"
-          disabled={taskTitle == ""}
+          disabled={taskTitle == "" || taskDescription == ""}
           onClick={handleAddTask}
           className="w-full border p-2 rounded-lg bg-blue-500 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >

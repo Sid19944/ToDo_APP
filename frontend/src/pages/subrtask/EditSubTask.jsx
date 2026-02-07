@@ -61,7 +61,7 @@ function EditSubTask({ next }) {
 
         <button
           type="submit"
-          disabled={subTaskTitle == ""}
+          disabled={subTaskTitle == "" || subTaskDescription == ""}
           onClick={(e) => EditSubTask(e, subTask._id)}
           className="w-full border p-2 rounded-lg bg-blue-500 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >

@@ -113,7 +113,7 @@ function EditTask({ next }) {
 
         <button
           type="submit"
-          disabled={taskTitle == ""}
+          disabled={taskTitle == "" || taskDescription == ""}
           onClick={(e) => handleEditTask(e, task._id)}
           className="w-full border p-2 rounded-lg bg-blue-500 font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
         >
