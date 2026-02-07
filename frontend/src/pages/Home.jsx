@@ -115,7 +115,7 @@ function Home() {
 
         <div
           id="add-task"
-          className={`border p-2 rounded-lg cursor-pointer ${showPage == "add-task" ? "bg-blue-400" : "bg-gray-400"}`}
+          className={`border p-2 rounded-lg cursor-pointer gap-1 flex items-center ${showPage == "add-task" ? "bg-blue-400" : "bg-gray-400"}`}
           onClick={() => setShowPage("add-task")}
         >
           <AddCircleOutlineIcon style={{ fontSize: "30px" }} />
@@ -269,7 +269,7 @@ function Home() {
           {(() => {
             switch (showPage) {
               case "to-do":
-                return <AllTodo />;
+                return <AllTodo next={(e)=> setShowPage("add-task")}/>;
               case "analytics":
                 return <Analytics />;
               case "add-task":

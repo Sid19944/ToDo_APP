@@ -25,7 +25,7 @@ import {
 import AddSubTask from "../subrtask/AddSubTask";
 import EditSubTask from "../subrtask/EditSubTask";
 
-function AllTodo() {
+function AllTodo({next}) {
   const dispatch = useDispatch();
   const [showSubList, setShowSubList] = useState("");
   const [date, setDate] = useState(new Date());
@@ -73,7 +73,7 @@ function AllTodo() {
     <div className="overflow-y-scroll rounded-l-lg h-full w-full">
       {showPage == "tasks" && (
         <>
-          <h1 className="sticky top-0 p-2 flex flex-wrap justify-between text-sm font-semibold bg-gray-500 rounded-lg mb-2">
+          <h1 className="sticky top-0 p-2 flex flex-wrap justify-between text-md font-semibold bg-gray-500 rounded-lg mb-2">
             <span className="flex flex-wrap">
               Tasks for{" "}
               {new Date()?.toLocaleDateString("en-IN") ==
@@ -93,144 +93,170 @@ function AllTodo() {
             </span>
           </h1>
           <ul className="flex flex-col gap-1">
-            {tasks?.map((task) => {
-              let newdate = new Date(task.todoDate).toLocaleDateString("en-IN");
-              if (dates.includes(newdate)) return;
-              dates.push(newdate);
+            {tasks.length > 0 ? (
+              tasks?.map((task) => {
+                let newdate = new Date(task.todoDate).toLocaleDateString(
+                  "en-IN",
+                );
+                if (dates.includes(newdate)) return;
+                dates.push(newdate);
 
-              return (
-                date?.toLocaleDateString("en-IN") == newdate &&
-                tasks
-                  .filter((task) => {
-                    const viewData = new Date(task.todoDate).toLocaleDateString(
-                      "en-IN",
-                    );
-                    return viewData == newdate;
-                  })
-                  .map((task) => {
-                    return (
-                      <li
-                        className="bg-gray-600 p-2 rounded-lg flex items-center flex-col gap-1"
-                        key={task._id}
-                      >
-                        <div className="w-full flex items-center justify-between p-1 rounded-lg bg-gray-400">
-                          <span className="flex gap-1 items-center">
-                            <span className="flex">
-                              <input
-                                type="checkbox"
-                                className="w-5 h-4 accent-purple-600"
-                                checked={task.isCompleted}
-                                value={!task.isCompleted}
-                                onChange={(e) =>
-                                  handleTaskDone(e.target.value, task._id)
-                                }
-                              />
-                            </span>
-                            <span
-                              className={`font-semibold ${task?.isCompleted && "line-through opacity-70"} ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}
-                            >
-                              {task.title}
-                            </span>
-                          </span>
-                          <span className="flex gap-1">
-                            {task?.subTask?.length != 0 &&
-                              (showSubList == task._id ? (
-                                <Link onClick={() => setShowSubList("")}>
-                                  <ArrowDropUpIcon />
-                                </Link>
-                              ) : (
-                                <Link onClick={() => setShowSubList(task._id)}>
-                                  <ArrowDropDownIcon />
-                                </Link>
-                              ))}
-
-                            <Link
-                              className="active:text-red-600 hover:text-red-600"
-                              onClick={() => handleTaskDelete(task._id)}
-                            >
-                              <DeleteForeverIcon />
-                            </Link>
-
-                            <Link
-                              className="active:text-green-600 hover:text-green-600"
-                              onClick={(e) => goEditTask(e, task._id)}
-                            >
-                              <EditDocumentIcon />
-                            </Link>
-                            <Link
-                              className="active:text-blue-600  hover:text-blue-600"
-                              onClick={(e) => goAddSubTask(e, task._id)}
-                            >
-                              <AddCircleOutlineIcon />
-                            </Link>
-                          </span>
-                        </div>
-                        <div className={`w-full bg-gray-400 px-2 rounded-lg ${task.isCompleted && "line-through"}`}>
-                          {task.description}
-                        </div>
-
-                        {showSubList == task._id && (
-                          <ol className="w-[98%] flex flex-col gap-1 ">
-                            <span className="text-sm text-blue-200">Subtasks</span>
-                            {task?.subTask?.map((sub) => (
-                              <li
-                                key={sub._id}
-                                className="border px-1 rounded-lg flex w-full justify-between bg-gray-500 items-center flex-wrap gap-2 p-1"
+                return (
+                  date?.toLocaleDateString("en-IN") == newdate &&
+                  tasks
+                    .filter((task) => {
+                      const viewData = new Date(
+                        task.todoDate,
+                      ).toLocaleDateString("en-IN");
+                      return viewData == newdate;
+                    })
+                    .map((task) => {
+                      return (
+                        <li
+                          className="bg-gray-600 p-2 rounded-lg flex items-center flex-col gap-1"
+                          key={task._id}
+                        >
+                          <div className="w-full flex items-center justify-between p-1 rounded-lg bg-gray-400">
+                            <span className="flex gap-1 items-center">
+                              <span className="flex">
+                                <input
+                                  type="checkbox"
+                                  className="w-5 h-4 accent-purple-600"
+                                  checked={task.isCompleted}
+                                  value={!task.isCompleted}
+                                  onChange={(e) =>
+                                    handleTaskDone(e.target.value, task._id)
+                                  }
+                                />
+                              </span>
+                              <span
+                                className={`font-semibold ${task?.isCompleted && "line-through opacity-70"} ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}
                               >
-                                <div className="flex justify-between w-full  rounded-lg px-2 bg-gray-400">
-                                  <div className="flex gap-1 items-center">
-                                    <input
-                                      type="checkbox"
-                                      className="w-5 h-4 accent-purple-600"
-                                      checked={sub.isCompleted}
-                                      value={!sub.isCompleted}
-                                      onChange={(e) =>
-                                        handleSubTaskDone(
-                                          e.target.value,
-                                          sub._id,
-                                        )
-                                      }
-                                    />
-                                    <span
-                                      className={`${sub.isCompleted && "line-through"} ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}
-                                    >
-                                      {sub.title}
-                                    </span>
+                                {task.title}
+                              </span>
+                            </span>
+                            <span className="flex gap-1">
+                              {task?.subTask?.length != 0 &&
+                                (showSubList == task._id ? (
+                                  <Link onClick={() => setShowSubList("")}>
+                                    <ArrowDropUpIcon />
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    onClick={() => setShowSubList(task._id)}
+                                  >
+                                    <ArrowDropDownIcon />
+                                  </Link>
+                                ))}
+
+                              <Link
+                                className="active:text-red-600 hover:text-red-600"
+                                onClick={() => handleTaskDelete(task._id)}
+                              >
+                                <DeleteForeverIcon />
+                              </Link>
+
+                              <Link
+                                className="active:text-green-600 hover:text-green-600"
+                                onClick={(e) => goEditTask(e, task._id)}
+                              >
+                                <EditDocumentIcon />
+                              </Link>
+                              <Link
+                                className="active:text-blue-600  hover:text-blue-600"
+                                onClick={(e) => goAddSubTask(e, task._id)}
+                              >
+                                <AddCircleOutlineIcon />
+                              </Link>
+                            </span>
+                          </div>
+                          <div
+                            className={`w-full bg-gray-400 px-2 rounded-lg ${task.isCompleted && "line-through"}`}
+                          >
+                            {task.description}
+                          </div>
+
+                          {showSubList == task._id && (
+                            <ol className="w-[98%] flex flex-col gap-1 ">
+                              <span className="text-sm text-blue-200">
+                                Subtasks
+                              </span>
+                              {task?.subTask?.map((sub) => (
+                                <li
+                                  key={sub._id}
+                                  className="border px-1 rounded-lg flex w-full justify-between bg-gray-500 items-center flex-wrap gap-2 p-1"
+                                >
+                                  <div className="flex justify-between w-full  rounded-lg px-2 bg-gray-400">
+                                    <div className="flex gap-1 items-center">
+                                      <input
+                                        type="checkbox"
+                                        className="w-5 h-4 accent-purple-600"
+                                        checked={sub.isCompleted}
+                                        value={!sub.isCompleted}
+                                        onChange={(e) =>
+                                          handleSubTaskDone(
+                                            e.target.value,
+                                            sub._id,
+                                          )
+                                        }
+                                      />
+                                      <span
+                                        className={`${sub.isCompleted && "line-through"} ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}
+                                      >
+                                        {sub.title}
+                                      </span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                      <Link
+                                        className="active:text-red-600 hover:text-red-600"
+                                        onClick={() =>
+                                          handleSubTaskDelete(sub._id)
+                                        }
+                                      >
+                                        <DeleteForeverIcon />
+                                      </Link>
+                                      <Link
+                                        className="active:text-green-600 hover:text-green-600"
+                                        onClick={(e) =>
+                                          goEditSubTask(e, sub._id, task._id)
+                                        }
+                                      >
+                                        <EditDocumentIcon />
+                                      </Link>
+                                    </div>
                                   </div>
-                                  <div className="flex gap-2">
-                                    <Link
-                                      className="active:text-red-600 hover:text-red-600"
-                                      onClick={() =>
-                                        handleSubTaskDelete(sub._id)
-                                      }
-                                    >
-                                      <DeleteForeverIcon />
-                                    </Link>
-                                    <Link
-                                      className="active:text-green-600 hover:text-green-600"
-                                      onClick={(e) =>
-                                        goEditSubTask(e, sub._id, task._id)
-                                      }
-                                    >
-                                      <EditDocumentIcon />
-                                    </Link>
+                                  <div
+                                    className={`w-full bg-gray-400 px-2 rounded-lg ${sub.isCompleted && "line-through"}`}
+                                  >
+                                    {sub.description}
                                   </div>
-                                </div>
-                                <div className={`w-full bg-gray-400 px-2 rounded-lg ${sub.isCompleted && "line-through"}`}>
-                                  {sub.description}
-                                </div>
-                              </li>
-                            ))}
-                          </ol>
-                        )}
-                        <span className={`w-full flex items-center gap-1 ${task.priority == "low" && "text-yellow-300 "} ${task.priority == "medium" && "text-green-300"} ${task.priority == "high" && "text-red-500"}`}>
-                          <span className={`w-2 h-2 rounded-[100%] ${task.priority == "low" && "bg-yellow-300 "} ${task.priority == "medium" && "bg-green-300"} ${task.priority == "high" && "bg-red-500"} `}></span>
-                          {task.priority}</span>
-                      </li>
-                    );
-                  })
-              );
-            })}
+                                </li>
+                              ))}
+                            </ol>
+                          )}
+                          <span
+                            className={`w-full flex items-center gap-1 ${task.priority == "low" && "text-yellow-300 "} ${task.priority == "medium" && "text-green-300"} ${task.priority == "high" && "text-red-500"}`}
+                          >
+                            <span
+                              className={`w-2 h-2 rounded-[100%] ${task.priority == "low" && "bg-yellow-300 "} ${task.priority == "medium" && "bg-green-300"} ${task.priority == "high" && "bg-red-500"} `}
+                            ></span>
+                            {task.priority}
+                          </span>
+                        </li>
+                      );
+                    })
+                );
+              })
+            ) : (
+              <div
+                id="add-task"
+                className={`border p-2 rounded-lg cursor-pointer gap-1 flex items-center ${showPage == "add-task" ? "bg-blue-400" : "bg-gray-400"}`}
+                onClick={next}
+              >
+                <AddCircleOutlineIcon style={{ fontSize: "30px" }} />
+                <span className="text-md font-semibold">Add Task</span>
+              </div>
+            )}
           </ul>
         </>
       )}
