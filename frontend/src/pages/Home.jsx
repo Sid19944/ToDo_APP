@@ -24,7 +24,7 @@ import Analytics from "./analytics/Analytics";
 
 function Home() {
   const [showPage, setShowPage] = useState("to-do");
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState(true);
   const [dateTask, setDateTask] = useState("");
   const [showMenu, setShowMenu] = useState(false);
   const greet = new Date().getHours();
@@ -41,6 +41,8 @@ function Home() {
   const { subLoading, subTaskError, subTaskMessage } = useSelector(
     (state) => state.subTask,
   );
+
+  console.log(mode);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -82,12 +84,12 @@ function Home() {
   }, [subTaskError, subTaskMessage]);
   return (
     <div
-      className={`h-screen font-serif p-2 ${mode == "light" ? "bg-white text-black" : "bg-black text-white"} flex gap-4 w-full`}
+      className={`h-screen font-serif p-2 ${mode ? "bg-black text-white" : "bg-white text-black"} flex gap-4 w-full`}
     >
       {/* Nav for desktop */}
       <nav
         id="desktop-nav"
-        className="shadow-[0px_0px_3px_3px] h-full w-60 p-2 rounded-xl md:flex flex-col gap-2 hidden md:w-50 lg:w-60"
+        className="shadow-[0px_0px_3px_3px] h-full w-75 p-2 rounded-xl md:flex flex-col gap-2 hidden"
       >
         <div
           id="logo"
@@ -124,26 +126,24 @@ function Home() {
 
         <div
           id="mode"
-          className="p-2 rounded-3xl mt-auto flex justify-between gap-1 bg-gray-500"
+          className="p-2 rounded-3xl mt-auto flex justify-between gap-1 bg-gray-400"
         >
-          <div
-            className={`border p-1 w-1/2 rounded-3xl flex items-center justify-center gap-3 bg-white text-black font-semibold cursor-pointer 
-            ${mode == "light" && "blur-[1px]"}`}
-            onClick={() => setMode("light")}
+          <button
+            className={`w-12 h-6 flex items-center rounded-full p-1 ${mode ? "bg-blue-700" : "bg-gray-600"}`}
+            onClick={() => setMode(!mode)}
           >
+            <div
+              className={`bg-white w-4 h-4 rounded-full transform transition ${mode ? "translate-x-6" : "translate-0"} `}
+            ></div>
+          </button>
+          {mode ? (
+            <DarkModeIcon />
+          ) : (
             <LightModeIcon
-              className={`${mode == "light" && "animate-spin"}`}
+              className="text-yellow-300 animate-spin"
               style={{ animationDuration: "3s" }}
             />
-            <span>Light</span>
-          </div>
-          <div
-            className={`border p-2 w-1/2 rounded-3xl flex items-center justify-center gap-3 bg-black text-white font-semibold cursor-pointer
-            ${mode == "dark" && "blur-[1px] "}`}
-            onClick={() => setMode("dark")}
-          >
-            <DarkModeIcon /> <span>Dark</span>
-          </div>
+          )}
         </div>
 
         <div
@@ -180,21 +180,22 @@ function Home() {
           </div>
 
           <div className="flex gap-2">
-            <span
-              className={`border rounded-[100%] p-1 flex justify-center items-center bg-white text-black ${mode == "light" && "blur-[1px] "}`}
-              onClick={() => setMode("light")}
-            >
-              <LightModeIcon
-                className={`${mode == "light" && "animate-spin "}`}
-                style={{ animationDuration: "5s" }}
-              />
-            </span>
-            <span
-              className={`border rounded-[100%] p-1 flex justify-center items-center ${mode == "dark" && "blur-[1px] "}`}
-              onClick={() => setMode("dark")}
-            >
+            {mode ? (
               <DarkModeIcon />
-            </span>
+            ) : (
+              <LightModeIcon
+                className="text-yellow-300 animate-spin"
+                style={{ animationDuration: "3s" }}
+              />
+            )}
+            <button
+              className={`w-12 h-6 flex items-center rounded-full p-1 ${mode ? "bg-blue-700" : "bg-gray-600"}`}
+              onClick={() => setMode(!mode)}
+            >
+              <div
+                className={`bg-white w-4 h-4 rounded-full transform transition ${mode ? "translate-x-6" : "translate-0"} `}
+              ></div>
+            </button>
           </div>
 
           <div
