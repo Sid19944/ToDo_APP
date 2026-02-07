@@ -49,7 +49,7 @@ function Home() {
   useEffect(() => {
     if (Object.keys(user).length == 0) dispatch(getUser());
     if (!isAuthenticated) {
-      navigate("/");
+      navigate("/landing");
     }
     if (error) {
       toast.error(error, { position: "bottom-left" });

@@ -1,12 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../store/slice/user.slice";
 
 function LandingPage() {
+  const {isAuthenticated, user}= useSelector(state=>state.user)
+  const dispacth = useDispatch()
+  const navigate = useNavigate()
+
+    useEffect(() => {
+      if (Object.keys(user).length == 0) dispacth(getUser());
+      if (isAuthenticated) {
+        navigate("/");
+      }
+    }, [isAuthenticated]);
+  
   return (
     <div className="font-serif bg-gradient-to-r from-blue-300 to-purple-400 h-screen overflow-y-auto">
       <nav className="bg-gradient-to-l items-center from-blue-400 to-purple-500 h-14 p-1 flex justify-between sticky top-0">
