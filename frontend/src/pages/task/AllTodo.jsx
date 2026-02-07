@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import EditTask from "./EditTask";
 
 import DatePicker from "react-datepicker";
-// import {DayPicker} from "react-day-picker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -12,7 +11,6 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import EditDocumentIcon from "@mui/icons-material/EditDocument";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 import {
   deleteTask,
@@ -34,7 +32,8 @@ function AllTodo() {
   const [showPage, setShowPage] = useState("tasks");
   const { tasks } = useSelector((state) => state.task);
   const dates = [];
-  const [showFilter ,setShowFilter] = useState(false)
+  const [showFilter, setShowFilter] = useState(false);
+  const [filter, setFilter] = useState("all");
 
   const handleTaskDelete = (id) => {
     dispatch(deleteTask(id));
@@ -88,16 +87,10 @@ function AllTodo() {
                 popperPlacement="bottom-start"
               />
             </span>
-            <span className="text-xs flex items-center cursor-pointer" onClick={()=> setShowFilter(!showFilter)}>
-              filter <FilterAltIcon style={{ width: "15px" }} />
+            <span className="gap-2 flex text-xs items-center">
+              <span className="text-yellow-400">Work</span>
+              <span className="text-purple-800">Personal</span>
             </span>
-
-            <ol className={`absolute translate-y-6 right-4 ${showFilter? "flex" : "hidden"} flex-col gap-2 p-2 bg-gray-800 rounded-l-lg rounded-b-lg`}>
-              <li className="text-yellow-400 border text-center rounded-full px-2 bg-gray-400">Work</li>
-              <li className="text-purple-600 border text-center rounded-full px-2 bg-gray-400">Personal</li>
-              <li className="text-green-800 border text-center rounded-full px-2 bg-gray-400">Completed</li>
-              <li className="text-red-800 border text-center rounded-full px-2 bg-gray-400">Due</li>
-            </ol>
           </h1>
           <ul className="flex flex-col gap-1">
             {tasks?.map((task) => {
@@ -117,10 +110,10 @@ function AllTodo() {
                   .map((task) => {
                     return (
                       <li
-                        className="bg-gray-600 p-2 rounded-lg flex items-center flex-col"
+                        className="bg-gray-600 p-2 rounded-lg flex items-center flex-col gap-1"
                         key={task._id}
                       >
-                        <div className="w-full flex items-center justify-between py-2 px-1 rounded-lg bg-gray-400">
+                        <div className="w-full flex items-center justify-between p-1 rounded-lg bg-gray-400 ">
                           <span className="flex gap-1 items-center">
                             <span className=" flex">
                               <input
@@ -171,6 +164,9 @@ function AllTodo() {
                               <AddCircleOutlineIcon />
                             </Link>
                           </span>
+                        </div>
+                        <div className="w-full bg-gray-400 px-2 rounded-lg">
+                          {task.description}
                         </div>
 
                         {showSubList == task._id && (

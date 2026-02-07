@@ -9,6 +9,8 @@ function AddTask() {
   const dispatch = useDispatch();
 
   const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [priority, setPriority] = useState("low");
   const [date, setDate] = useState(new Date());
 
   const [category, setCategory] = useState("Personal");
@@ -18,11 +20,13 @@ function AddTask() {
     dispatch(
       taskAdd({
         title: taskTitle,
+        description: taskDescription,
+        priority : priority,
         category: category,
         todoDate: date,
       }),
     );
-    setTaskTitle("")
+    setTaskTitle("");
   };
 
   return (
@@ -33,7 +37,7 @@ function AddTask() {
       <form className="flex flex-wrap gap-2 ">
         <div className="items-center flex gap-2 w-full p-2 rounded-lg bg-gray-400 font-semibold flex-wrap">
           <label htmlFor="date " className="underline">
-            Select Date to-do :
+            Due Date :
           </label>
           <DatePicker
             id="date"
@@ -47,17 +51,51 @@ function AddTask() {
             htmlFor="title"
             className="w-full font-lg font-semibold tracking-[2px] underline"
           >
-            What you want to do
+            Enter Title
           </label>
           <input
             type="text"
             name="title"
             id="title"
-            placeholder="Enter To Do"
+            placeholder="Enter Title"
             value={taskTitle}
             onChange={(e) => setTaskTitle(e.target.value)}
             className="border w-full p-1 px-2 rounded-lg outline-purple-400"
           />
+        </div>
+        <div className="w-full flex flex-wrap p-2 rounded-lg bg-gray-400 gap-2">
+          <label
+            htmlFor="title"
+            className="w-full font-lg font-semibold tracking-[2px] underline"
+          >
+            Enter Description
+          </label>
+          <textarea
+            rows={4}
+            type="text"
+            name="description"
+            id="description"
+            placeholder="Enter Description"
+            value={taskDescription}
+            onChange={(e) => setTaskDescription(e.target.value)}
+            className="border w-full p-1 px-2 rounded-lg outline-purple-400"
+          />
+        </div>
+
+        <div className="w-full flex flex-wrap p-2 rounded-lg bg-gray-400 gap-2 justify-between">
+          <label className="w-1/2 font-lg font-semibold tracking-[2px] underline">
+            Select Priority
+          </label>
+          <select
+            name="priority"
+            id="priority"
+            className="bg-gray-400 px-2 border rounded-lg cursor-pointer"
+            onChange={(e)=>setPriority(e.target.value)}
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
         </div>
         <div className="w-full flex flex-wrap p-2 rounded-lg bg-gray-400 gap-2 justify-between">
           <label
