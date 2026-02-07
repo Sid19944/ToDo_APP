@@ -6,10 +6,13 @@ function EditSubTask({ next }) {
   const dispatch = useDispatch();
   const { subTask } = useSelector((state) => state.subTask);
   const [subTaskTitle, setSubTaskTitle] = useState(subTask.title);
+  const [subTaskDescription, setSubTaskDescription] = useState(
+    subTask.description,
+  );
 
   const EditSubTask = (e, subTaskId) => {
     e.preventDefault();
-    dispatch(editSubTask(subTaskId, { title: subTaskTitle }));
+    dispatch(editSubTask(subTaskId, { title: subTaskTitle, description : subTaskDescription }));
     next();
   };
 
@@ -37,6 +40,23 @@ function EditSubTask({ next }) {
             onChange={(e) => setSubTaskTitle(e.target.value)}
             className="border w-full p-1 px-2 rounded-lg outline-purple-400"
           />
+        </div>
+
+        <div className="w-full bg-gray-400 rounded-lg flex flex-wrap p-2">
+          <label
+            htmlFor="description"
+            className="w-full font-lg font-semibold tracking-[2px] underline"
+          >
+            Description
+          </label>
+          <textarea
+            name="description"
+            id="description"
+            rows={4}
+            className="w-full border rounded-lg p-1"
+            value={subTaskDescription}
+            onChange={(e)=>setSubTaskDescription(e.target.value)}
+          ></textarea>
         </div>
 
         <button

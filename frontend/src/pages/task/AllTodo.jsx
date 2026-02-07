@@ -113,9 +113,9 @@ function AllTodo() {
                         className="bg-gray-600 p-2 rounded-lg flex items-center flex-col gap-1"
                         key={task._id}
                       >
-                        <div className="w-full flex items-center justify-between p-1 rounded-lg bg-gray-400 ">
+                        <div className="w-full flex items-center justify-between p-1 rounded-lg bg-gray-400">
                           <span className="flex gap-1 items-center">
-                            <span className=" flex">
+                            <span className="flex">
                               <input
                                 type="checkbox"
                                 className="w-5 h-4 accent-purple-600"
@@ -170,43 +170,54 @@ function AllTodo() {
                         </div>
 
                         {showSubList == task._id && (
-                          <ol className="w-[98%] flex flex-col gap-1 my-2 ">
+                          <ol className="w-[98%] flex flex-col gap-1 ">
+                            <span className="text-sm text-blue-200">Subtasks</span>
                             {task?.subTask?.map((sub) => (
                               <li
                                 key={sub._id}
-                                className="border px-1 rounded-lg flex w-full justify-between bg-gray-400 items-center"
+                                className="border px-1 rounded-lg flex w-full justify-between bg-gray-500 items-center flex-wrap gap-2 p-1"
                               >
-                                <div className="flex gap-1 items-center">
-                                  <input
-                                    type="checkbox"
-                                    className="w-5 h-4 accent-purple-600"
-                                    checked={sub.isCompleted}
-                                    value={!sub.isCompleted}
-                                    onChange={(e) =>
-                                      handleSubTaskDone(e.target.value, sub._id)
-                                    }
-                                  />
-                                  <span
-                                    className={`${sub.isCompleted && "line-through"} ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}
-                                  >
-                                    {sub.title}
-                                  </span>
+                                <div className="flex justify-between w-full  rounded-lg px-2 bg-gray-400">
+                                  <div className="flex gap-1 items-center">
+                                    <input
+                                      type="checkbox"
+                                      className="w-5 h-4 accent-purple-600"
+                                      checked={sub.isCompleted}
+                                      value={!sub.isCompleted}
+                                      onChange={(e) =>
+                                        handleSubTaskDone(
+                                          e.target.value,
+                                          sub._id,
+                                        )
+                                      }
+                                    />
+                                    <span
+                                      className={`${sub.isCompleted && "line-through"} ${task.category == "Work" ? "text-purple-600" : "text-yellow-400"}`}
+                                    >
+                                      {sub.title}
+                                    </span>
+                                  </div>
+                                  <div className="flex gap-2">
+                                    <Link
+                                      className="active:text-red-600 hover:text-red-600"
+                                      onClick={() =>
+                                        handleSubTaskDelete(sub._id)
+                                      }
+                                    >
+                                      <DeleteForeverIcon />
+                                    </Link>
+                                    <Link
+                                      className="active:text-green-600 hover:text-green-600"
+                                      onClick={(e) =>
+                                        goEditSubTask(e, sub._id, task._id)
+                                      }
+                                    >
+                                      <EditDocumentIcon />
+                                    </Link>
+                                  </div>
                                 </div>
-                                <div className="flex gap-2">
-                                  <Link
-                                    className="active:text-red-600 hover:text-red-600"
-                                    onClick={() => handleSubTaskDelete(sub._id)}
-                                  >
-                                    <DeleteForeverIcon />
-                                  </Link>
-                                  <Link
-                                    className="active:text-green-600 hover:text-green-600"
-                                    onClick={(e) =>
-                                      goEditSubTask(e, sub._id, task._id)
-                                    }
-                                  >
-                                    <EditDocumentIcon />
-                                  </Link>
+                                <div className="w-full bg-gray-400 px-2 rounded-lg">
+                                  {sub.description}
                                 </div>
                               </li>
                             ))}
