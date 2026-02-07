@@ -42,8 +42,6 @@ function Home() {
     (state) => state.subTask,
   );
 
-  console.log(mode);
-
   const handleLogout = () => {
     dispatch(logoutUser());
   };
@@ -265,7 +263,7 @@ function Home() {
 
             {user?.name?.split(" ")[0]}
           </h1>
-          <p className="opacity-60">What do you plain to-do today</p>
+          <p className="opacity-60">What do you plain to-do today </p>
         </div>
         <div className="shadow-[0px_0px_3px_3px] h-full w-full rounded-lg p-2 overflow-y-auto">
           {(() => {

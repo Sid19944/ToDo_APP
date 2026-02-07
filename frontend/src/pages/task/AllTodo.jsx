@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import EditTask from "./EditTask";
 
 import DatePicker from "react-datepicker";
+// import {DayPicker} from "react-day-picker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -11,6 +12,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import EditDocumentIcon from "@mui/icons-material/EditDocument";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 import {
   deleteTask,
@@ -32,6 +34,7 @@ function AllTodo() {
   const [showPage, setShowPage] = useState("tasks");
   const { tasks } = useSelector((state) => state.task);
   const dates = [];
+  const [showFilter ,setShowFilter] = useState(false)
 
   const handleTaskDelete = (id) => {
     dispatch(deleteTask(id));
@@ -71,26 +74,30 @@ function AllTodo() {
     <div className="overflow-y-scroll rounded-l-lg h-full w-full">
       {showPage == "tasks" && (
         <>
-          <h1 className="sticky top-0 p-2 flex flex-wrap justify-between text-lg font-semibold bg-gray-500 rounded-lg mb-2">
+          <h1 className="sticky top-0 p-2 flex flex-wrap justify-between text-sm font-semibold bg-gray-500 rounded-lg mb-2">
             <span className="flex flex-wrap">
-              Tasks for
-              {new Date().toLocaleDateString("en-IN") ==
-                date.toLocaleDateString("en-IN") && "Today"}
+              Tasks for{" "}
+              {new Date()?.toLocaleDateString("en-IN") ==
+                date?.toLocaleDateString("en-IN") && "Today"}
               &nbsp;
               <DatePicker
                 id="date"
                 selected={date}
                 onChange={(date) => setDate(date)}
-                className="border w-27 rounded-lg text-sm text-center"
+                className="border w-25 rounded-lg text-sm text-center"
                 popperPlacement="bottom-start"
               />
             </span>
-            <span className="flex gap-2 items-center">
-              <span className="text-purple-400 text-xs sm:text-md ">Work</span>
-              <span className="text-yellow-400 text-xs sm:text-md ">
-                Personal
-              </span>
+            <span className="text-xs flex items-center cursor-pointer" onClick={()=> setShowFilter(!showFilter)}>
+              filter <FilterAltIcon style={{ width: "15px" }} />
             </span>
+
+            <ol className={`absolute translate-y-6 right-4 ${showFilter? "flex" : "hidden"} flex-col gap-2 p-2 bg-gray-800 rounded-l-lg rounded-b-lg`}>
+              <li className="text-yellow-400 border text-center rounded-full px-2 bg-gray-400">Work</li>
+              <li className="text-purple-600 border text-center rounded-full px-2 bg-gray-400">Personal</li>
+              <li className="text-green-800 border text-center rounded-full px-2 bg-gray-400">Completed</li>
+              <li className="text-red-800 border text-center rounded-full px-2 bg-gray-400">Due</li>
+            </ol>
           </h1>
           <ul className="flex flex-col gap-1">
             {tasks?.map((task) => {
@@ -99,7 +106,7 @@ function AllTodo() {
               dates.push(newdate);
 
               return (
-                date.toLocaleDateString("en-IN") == newdate &&
+                date?.toLocaleDateString("en-IN") == newdate &&
                 tasks
                   .filter((task) => {
                     const viewData = new Date(task.todoDate).toLocaleDateString(
