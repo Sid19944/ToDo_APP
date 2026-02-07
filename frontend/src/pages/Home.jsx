@@ -82,7 +82,7 @@ function Home() {
   }, [subTaskError, subTaskMessage]);
   return (
     <div
-      className={`h-screen font-serif p-2 ${mode ? "bg-black text-white" : "bg-white text-black"} flex gap-4 w-full`}
+      className={`h-screen font-serif p-2 ${mode ? "bg-black text-white" : "bg-gradient-to-r from-blue-400 to-purple-600 text-black"} flex gap-4 w-full `}
     >
       {/* Nav for desktop */}
       <nav
