@@ -127,7 +127,7 @@ function Home() {
           className="p-2 rounded-3xl mt-auto flex justify-between gap-1 bg-gray-400"
         >
           <button
-            className={`w-12 h-6 flex items-center rounded-full p-1 ${mode ? "bg-blue-700" : "bg-gray-600"}`}
+            className={`w-12 h-6 flex cursor-pointer items-center rounded-full p-1 ${mode ? "bg-blue-700" : "bg-gray-600"}`}
             onClick={() => setMode(!mode)}
           >
             <div
@@ -187,7 +187,7 @@ function Home() {
               />
             )}
             <button
-              className={`w-12 h-6 flex items-center rounded-full p-1 ${mode ? "bg-blue-700" : "bg-gray-600"}`}
+              className={`w-12 h-6 flex items-center cursor-pointer rounded-full p-1 ${mode ? "bg-blue-700" : "bg-gray-600"}`}
               onClick={() => setMode(!mode)}
             >
               <div
