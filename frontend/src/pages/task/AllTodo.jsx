@@ -93,7 +93,7 @@ function AllTodo({next}) {
             </span>
           </h1>
           <ul className="flex flex-col gap-1">
-            {tasks.length > 0 ? (
+            {
               tasks?.map((task) => {
                 let newdate = new Date(task.todoDate).toLocaleDateString(
                   "en-IN",
@@ -246,17 +246,15 @@ function AllTodo({next}) {
                       );
                     })
                 );
-              })
-            ) : (
+              })}
               <div
                 id="add-task"
-                className={`border p-2 rounded-lg cursor-pointer gap-1 flex items-center ${showPage == "add-task" ? "bg-blue-400" : "bg-gray-400"}`}
+                className={`border my-4 p-2 rounded-lg cursor-pointer gap-1 flex items-center ${showPage == "add-task" ? "bg-blue-400" : "bg-gray-400"}`}
                 onClick={next}
               >
                 <AddCircleOutlineIcon style={{ fontSize: "30px" }} />
-                <span className="text-md font-semibold">Add Task</span>
+                <span className="text-md font-semibold">Add New</span>
               </div>
-            )}
           </ul>
         </>
       )}
