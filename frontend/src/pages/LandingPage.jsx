@@ -8,6 +8,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../store/slice/user.slice";
+import Footer from "./Footer";
 
 function LandingPage() {
   const {isAuthenticated, user}= useSelector(state=>state.user)
@@ -48,7 +49,7 @@ function LandingPage() {
           initial={{ x: -100, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="text-xl sm:text-3xl w-fit"
+          className="text-xl sm:text-7xl w-fit"
         >
           Effortless task management{" "}
         </motion.span>
@@ -57,7 +58,7 @@ function LandingPage() {
           whileInView={{ x: 0, opacity: 1 }}
           transition={{ duration: 1.5 }}
           viewport={{ once: false }}
-          className="text-xl sm:text-3xl w-fit text-yellow-300"
+          className="text-xl sm:text-7xl w-fit text-yellow-300"
         >
           Anytime
         </motion.span>
@@ -66,7 +67,7 @@ function LandingPage() {
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: false }}
           transition={{ duration: 2 }}
-          className="text-xl sm:text-3xl w-fit"
+          className="text-xl sm:text-7xl w-fit"
         >
           In One Plateform
         </motion.span>
@@ -74,7 +75,7 @@ function LandingPage() {
 
       <div id="btn" className="w-full flex justify-center my-5">
         <Link
-          className="shadow-[0px_0px_3px_3px] bg-blue-600 px-4 text-2xl rounded-full py-1 outline tracking-[2px]"
+          className="shadow-[0px_0px_3px_3px] bg-blue-600 px-4 text-4xl rounded-full py-1 outline tracking-[2px]"
           to={`/auth`}
         >
           Let's Start
@@ -85,7 +86,7 @@ function LandingPage() {
         id="features"
         className="my-5 w-full items-center flex flex-col gap-3"
       >
-        <p className="font-semibold tracking-[2px]">Features</p>
+        <p className="font-semibold tracking-[2px] text-3xl">Features</p>
         <div className="w-full flex flex-wrap justify-center gap-4">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
@@ -93,7 +94,7 @@ function LandingPage() {
             viewport={{ once: false }}
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.5 }}
-            className="group cursor-pointer shadow-[0px_0px_3px_3px] flex flex-wrap w-[90%] max-w-90 outline p-2 rounded-lg"
+            className="group cursor-pointer shadow-[0px_0px_3px_3px] flex flex-wrap w-[90%] max-w-100 outline p-2 rounded-lg"
           >
             <span className="w-full text-center mb-2 group-hover:scale-130">
               <HomeRepairServiceIcon
@@ -112,8 +113,8 @@ function LandingPage() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: false }}
             whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.5 }}
-            className="group cursor-pointer shadow-[0px_0px_3px_3px] flex flex-wrap w-[90%] max-w-90 outline p-2 rounded-lg"
+            transition={{ duration: 1, delay: 0.3 }}
+            className="group cursor-pointer shadow-[0px_0px_3px_3px] flex flex-wrap w-[90%] max-w-100 outline p-2 rounded-lg"
           >
             <span className="w-full text-center mb-2 group-hover:scale-130">
               <AnalyticsIcon style={{ width: "40px", height: "40px" }} />
@@ -134,8 +135,8 @@ function LandingPage() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: false }}
             whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.5 }}
-            className="cursor-pointe group shadow-[0px_0px_3px_3px] flex flex-wrap w-[90%] max-w-90 outline p-2 rounded-lg"
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="cursor-pointe group shadow-[0px_0px_3px_3px] flex flex-wrap w-[90%] max-w-100 outline p-2 rounded-lg"
           >
             <span className="w-full text-center mb-2 group-hover:scale-130">
               <CalendarMonthIcon style={{ width: "40px", height: "40px" }} />
@@ -149,7 +150,18 @@ function LandingPage() {
           </motion.div>
         </div>
       </div>
-      <video src="demo.mp4" autoPlay muted loop className="h-120 w-full p-1 rounded-lg"></video>
+      
+      <video src="demo.mp4" autoPlay muted loop className="h-140 w-full p-1 rounded-lg my-5"></video>
+
+      <div id="btn" className="w-full flex justify-center my-5">
+        <Link
+          className="shadow-[0px_0px_3px_3px] bg-blue-600 px-4 text-4xl rounded-full py-1 outline tracking-[2px]"
+          to={`/auth`}
+        >
+          Let's Start
+        </Link>
+      </div>
+      <Footer/>
     </div>
   );
 }
