@@ -10,7 +10,7 @@ function EditTask({ next }) {
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [taskDescription, setTaskDescription] = useState(task.description);
   const [priority, setPriority] = useState(task.priority);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(task.todoDate);
 
   const [category, setCategory] = useState(task.category);
   const dispatch = useDispatch();
@@ -81,17 +81,20 @@ function EditTask({ next }) {
             className="border w-full p-1 px-2 rounded-lg outline-purple-400"
           />
         </div>
-        <select
-          name="priority"
-          id="priority"
-          className="bg-gray-400 px-2 border rounded-lg cursor-pointer"
-          value={priority}
-          onChange={(e)=>setPriority(e.target.value)}
-        >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
+        <div className="w-full flex flex-wrap p-2 rounded-lg bg-gray-400 gap-2 justify-between">
+          <label htmlFor="priority" className="w-1/2 font-lg font-semibold tracking-[2px] underline">Select Priotity : </label>
+          <select
+            name="priority"
+            id="priority"
+            className="bg-gray-400 px-2 border rounded-lg cursor-pointer"
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
         <div className="w-full flex flex-wrap p-2 rounded-lg bg-gray-400 gap-2 justify-between">
           <label
             htmlFor="category"
