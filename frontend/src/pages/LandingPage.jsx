@@ -149,6 +149,7 @@ function LandingPage() {
           </motion.div>
         </div>
       </div>
+      <video src="demo.mp4" autoPlay muted loop className="h-120 w-full p-1 rounded-lg"></video>
     </div>
   );
 }
