@@ -2,18 +2,7 @@ import { asyncHandler } from "../utils/async.Handler.js";
 import ErrorHandler from "../utils/Error.Handler.js";
 import { User } from "../model/user.schema.js";
 import statusCode from "http-status-codes";
-
-const generateAccessAndRefreshToken = async (user) => {
-  try {
-    const accessToken = await user.generateAccessToken();
-    const refreshToken = await user.generateRefreshToken();
-
-    user.refreshToken = refreshToken;
-    await user.save();
-
-    return { accessToken, refreshToken };
-  } catch (error) {}
-};
+import { generateAccessAndRefreshToken } from "../middleware/genAccAndRefToken.js";
 
 export const googleLogin = asyncHandler(async (req, res, next) => {
   const userExist = await User.findOne({ authId: req.user._json.sub });
@@ -47,13 +36,13 @@ export const googleLogin = asyncHandler(async (req, res, next) => {
           httpOnly: true,
           sameSite: "none",
           secure: true,
-          maxAge: 12 * 60 * 60 * 1000,
+          maxAge: 15 * 60 * 1000,
         })
         .cookie("refreshToken", refreshToken, {
           httpOnly: true,
           sameSite: "none",
           secure: true,
-          maxAge: 24 * 60 * 60 * 1000,
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         })
         // .json({ message: "User Registered Successfully", user });
         .redirect(process.env.FRONTEND_URL)
