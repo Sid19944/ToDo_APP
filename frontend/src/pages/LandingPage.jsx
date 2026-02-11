@@ -73,9 +73,9 @@ function LandingPage() {
         </motion.span>
       </div>
 
-      <div id="btn" className="w-full flex justify-center my-5 hover:scale-110">
+      <div id="btn" className="w-full flex justify-center my-5 ">
         <Link
-          className="shadow-[0px_0px_3px_3px] bg-blue-600 px-4 text-4xl rounded-full py-1 outline tracking-[2px]"
+          className="shadow-[0px_0px_3px_3px] bg-blue-600 px-4 text-4xl rounded-full py-1 outline tracking-[2px] hover:scale-110"
           to={`/auth`}
         >
           Let's Start
@@ -153,9 +153,9 @@ function LandingPage() {
       
       <video src="demo.mp4" autoPlay muted loop className="h-140 w-full p-1 rounded-lg my-5"></video>
 
-      <div id="btn" className="w-full flex justify-center my-5 hover:scale-110">
+      <div id="btn" className="w-full flex justify-center my-5 ">
         <Link
-          className="shadow-[0px_0px_3px_3px] bg-blue-600 px-4 text-4xl rounded-full py-1 outline tracking-[2px]"
+          className="shadow-[0px_0px_3px_3px] bg-blue-600 px-4 text-4xl rounded-full py-1 outline tracking-[2px] hover:scale-110"
           to={`/auth`}
         >
           Let's Start
