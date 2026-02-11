@@ -65,7 +65,7 @@ function Analytics() {
         <div className="border rounded-lg p-5 w-full sm:w-[48%] flex justify-center items-center flex-col gap-2">
           <Pie
             data={{
-              labels: ["Completed", "UnCompleted"],
+              labels: ["Completed", "Duo"],
               datasets: [
                 {
                   label: "To-do",
@@ -84,7 +84,7 @@ function Analytics() {
             data={{
               labels: [
                 "Previous Completed",
-                "Previous Uncompleted",
+                "Previous Duo",
                 "Upcomming Tasks",
               ],
               datasets: [
@@ -113,7 +113,7 @@ function Analytics() {
                 backgroundColor: "rgb(55, 162, 235)",
               },
               {
-                label: "UnCompleted",
+                label: "Duo",
                 data: unCompletedDates.map((unCom) => unCom),
                 backgroundColor: "rgb(255, 64, 105)",
               },
