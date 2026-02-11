@@ -88,7 +88,7 @@ function AllTodo({ next }) {
               />
             </span>
 
-            <span className="text-xs outline px-2 py-1 rounded-full flex items-center justify-center">
+            <span className="text-xs px-2 py-1 rounded-full flex items-center justify-center">
               Filter <FilterAltIcon style={{ height: "15px" }} />
               <select
                 name={filter}
