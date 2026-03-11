@@ -38,7 +38,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: `${process.env.BACKEND_URL}/auth/github/callback`
+      callbackURL: `${process.env.BACKEND_URL}/auth/github/callback`,
     },
     (accessToken, refreshToken, profile, done) => {
       return done(null, profile);
@@ -47,6 +47,12 @@ passport.use(
 );
 
 app.use(passport.initialize());
+
+app.get("/keep-awaik", (req, res) => {
+  return res.status(200).json({
+    message: "Awaik",
+  });
+});
 
 import UserRouter from "./src/routes/user.route.js";
 app.use("/auth", UserRouter);

@@ -42,8 +42,8 @@ function Home() {
     (state) => state.subTask,
   );
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
   };
 
   useEffect(() => {
@@ -269,11 +269,11 @@ function Home() {
           {(() => {
             switch (showPage) {
               case "to-do":
-                return <AllTodo next={(e)=> setShowPage("add-task")}/>;
+                return <AllTodo next={(e) => setShowPage("add-task")} />;
               case "analytics":
                 return <Analytics />;
               case "add-task":
-                return <AddTask next={(e)=>setShowPage("to-do")}/>;
+                return <AddTask next={(e) => setShowPage("to-do")} />;
             }
           })()}
           <ToastContainer />
